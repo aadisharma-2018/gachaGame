@@ -21,12 +21,23 @@ This repository is a **phased learning project**: each phase adds a focused slic
 - Session **Common** and **Rare** pull counts
 - All state is **in-memory only** (resets on refresh)
 
-**Not included (yet):** backend, database, auth, persistence (`localStorage` / `sessionStorage`), inventory UI, Docker, CI/CD.
+**Phase 3 — Docker (local)**
+
+- Build and run the same app in a container (nginx serves production `dist/`)
+- Documented `docker build` / `docker run` workflow
+
+**Not included (yet):** backend, database, auth, persistence (`localStorage` / `sessionStorage`), inventory UI, Docker Compose, Kubernetes, CI/CD.
 
 ## Prerequisites
 
+**npm (local development)**
+
 - [Node.js](https://nodejs.org/) 18+ (20+ recommended)
 - npm (bundled with Node)
+
+**Docker (optional container run)**
+
+- [Docker](https://docs.docker.com/get-docker/) Engine or Docker Desktop
 
 ## Install dependencies
 
@@ -54,6 +65,46 @@ npm run preview
 ```
 
 `npm run preview` serves the contents of `dist/` for a quick smoke test after building.
+
+## Docker
+
+Run the app in a container (production-style build + nginx). Game behavior matches the npm workflow; no changes to `src/`.
+
+### Build image
+
+From the repository root:
+
+```bash
+docker build -t gacha-game:local .
+```
+
+### Run container
+
+```bash
+docker run --rm -p 8080:80 gacha-game:local
+```
+
+Open **http://localhost:8080** in your browser.
+
+If port 8080 is in use:
+
+```bash
+docker run --rm -p 3000:80 gacha-game:local
+```
+
+Then open **http://localhost:3000**.
+
+Stop the container with `Ctrl+C` in the terminal where `docker run` is running.
+
+### Docker manual verification
+
+- [ ] `docker build -t gacha-game:local .` completes without errors
+- [ ] `docker run --rm -p 8080:80 gacha-game:local` stays running
+- [ ] http://localhost:8080 shows the game (coins, Pull, counters, timer)
+- [ ] **Pull** costs 1 coin; at 0 coins shows **Not enough coins.**
+- [ ] Browser refresh resets session (coins 10, counts 0)
+- [ ] Gameplay matches `npm run dev` for Phase 1–2 rules
+- [ ] `npm run dev` still works independently
 
 ## Manual verification
 
@@ -120,4 +171,4 @@ npm run preview
 
 ## Specifications
 
-Design docs and task lists live under `specs/` (e.g. `001-phase1-gacha-pull`, `002-phase2-currency-counters`).
+Design docs and task lists live under `specs/` (e.g. `001-phase1-gacha-pull`, `002-phase2-currency-counters`, `003-phase3-docker-dev`).
