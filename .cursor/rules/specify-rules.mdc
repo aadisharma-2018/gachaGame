@@ -6,9 +6,11 @@ alwaysApply: true
 
 # gachaGame Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-05-19
+Auto-generated from all feature plans. Last updated: 2026-05-27
 
 ## Active Technologies
+- JavaScript (ES modules), Vite 6.x, Node 20 LTS (build stage) + Vite (dev/build); nginx 1.27-alpine (runtime stage) (003-phase3-docker-dev)
+- N/A (static files in image only; app state remains in-browser memory) (003-phase3-docker-dev)
 
 - JavaScript (ES2022+), HTML5, CSS3 + Vite 6.x (dev server and bundler only; no UI framework) (001-phase1-gacha-pull)
 
@@ -29,6 +31,7 @@ npm test && npm run lint
 JavaScript (ES2022+), HTML5, CSS3: Follow standard conventions
 
 ## Recent Changes
+- 003-phase3-docker-dev: Added JavaScript (ES modules), Vite 6.x, Node 20 LTS (build stage) + Vite (dev/build); nginx 1.27-alpine (runtime stage)
 
 - 001-phase1-gacha-pull: Added JavaScript (ES2022+), HTML5, CSS3 + Vite 6.x (dev server and bundler only; no UI framework)
 
