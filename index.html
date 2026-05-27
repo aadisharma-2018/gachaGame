@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gacha Pull</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="game">
+      <h1 class="game__title">Gacha Pull</h1>
+      <div class="game__stats" aria-label="Session statistics">
+        <p id="coin-balance" class="game__stat">Coins: 10</p>
+        <p id="common-count" class="game__stat">Common: 0</p>
+        <p id="rare-count" class="game__stat">Rare: 0</p>
+        <p id="coin-timer" class="game__stat game__stat--timer">Next coin: 1:00</p>
+      </div>
+      <p id="result" class="game__result" aria-live="polite">
+        Pull to reveal a card
+      </p>
+      <button id="pull-btn" type="button" class="game__pull">Pull</button>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

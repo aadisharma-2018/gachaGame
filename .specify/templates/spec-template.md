@@ -5,6 +5,10 @@
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
 
+> **Constitution**: Align scope with `.specify/memory/constitution.md` and the active project
+> phase (e.g., Phase 1 = Pull button, Common/Rare only, no persistence). Reject or defer
+> requirements that violate phase boundaries unless the user explicitly expands scope.
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--

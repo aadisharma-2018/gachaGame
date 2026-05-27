@@ -60,14 +60,17 @@ description: "Task list template for feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-Examples of foundational tasks (adjust based on your project):
+> **Constitution (Gacha Game)**: For Phase 1, skip database, auth, API, Docker, and CI/CD
+> tasks entirely. Foundational work is limited to minimal app scaffold (e.g., single-page
+> UI shell, pull randomizer hook-up). See `.specify/memory/constitution.md`.
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+Examples of foundational tasks (adjust based on your project and active phase):
+
+- [ ] T004 [Phase 1] Minimal app entry and page shell (local run documented)
+- [ ] T005 [Phase 1] Shared pull outcome types/constants (Common 90%, Rare 10%)
+- [ ] T006 [NEEDS PHASE >1] Setup database schema and migrations framework
+- [ ] T007 [NEEDS PHASE >1] Implement authentication/authorization framework
+- [ ] T008 [NEEDS PHASE >1] Setup API routing and middleware structure
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 

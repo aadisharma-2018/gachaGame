@@ -1,50 +1,133 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: (unratified template) → 1.0.0
+- Modified principles: N/A (initial ratification from template placeholders)
+- Added sections: Phase 1: Playable Pull Prototype; Development Workflow
+- Removed sections: None (template placeholders replaced)
+- Templates:
+  - ✅ .specify/templates/plan-template.md (Constitution Check gates)
+  - ✅ .specify/templates/spec-template.md (phase scope note)
+  - ✅ .specify/templates/tasks-template.md (phase-aware foundational guidance)
+  - ⚠ .specify/templates/commands/*.md (not present; commands live in .cursor/commands/)
+  - ⚠ README.md (not present; no runtime doc updates)
+- Deferred TODOs: None
+-->
+
+# Gacha Game Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Extreme Simplicity First
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+The first version MUST be the simplest playable prototype. Build only what is needed for
+the current phase; defer everything else.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Rationale**: This is a learning-focused game project built in small phases; complexity
+early obscures learning goals and slows feedback.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. No Premature Infrastructure
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+The project MUST NOT add authentication, databases, Docker, Kubernetes, AWS, CI/CD
+pipelines, or backend services until a later phase explicitly requests them.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**Rationale**: Infrastructure overhead distracts from core game mechanics and local
+prototyping.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. No Unnecessary Abstractions
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Do not introduce architecture layers, frameworks, or patterns beyond what the current phase
+requires. Prefer direct, readable code over clever indirection.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Rationale**: Premature abstraction increases maintenance cost without user value in early
+phases.
+
+### IV. Local-First Runnable App
+
+The application MUST be easy to run locally with minimal setup. The UI MUST be clean and
+simple for the current phase.
+
+**Rationale**: Fast feedback loops support learning and manual verification.
+
+### V. Phase-Bounded Scope
+
+Work proceeds one phase at a time. Do not implement features from future phases unless the
+user explicitly asks.
+
+**Rationale**: Phased delivery keeps each increment reviewable, explainable, and
+independently valuable.
+
+## Phase 1: Playable Pull Prototype
+
+Phase 1 is the minimum gacha-style card pull experience. All specs, plans, and tasks for
+Phase 1 MUST stay within this scope.
+
+### Required Behavior
+
+- A **Pull** button MUST be visible on the page.
+- Clicking **Pull** MUST randomly display either a **Common** card or a **Rare** card.
+- Pull probabilities MUST be: **Common 90%**, **Rare 10%**.
+- The user has infinite money; NO currency system in Phase 1.
+
+### Explicitly Out of Scope (Phase 1)
+
+- Card collection, inventory, or persistence
+- User accounts or authentication
+- Data surviving a browser refresh
+- Backend services, APIs, or server-side pull logic
+
+### Definition of Done (Phase 1)
+
+1. The app runs locally.
+2. The page displays a **Pull** button.
+3. Clicking **Pull** randomly displays either a Common or Rare card.
+4. Rare appears approximately 10% of the time (verify manually over many pulls).
+5. Common appears approximately 90% of the time.
+6. No data is stored after refresh.
+7. No systems beyond this prototype are added.
+
+## Development Workflow
+
+### Process Rules
+
+1. Implement **one phase at a time**.
+2. After each phase, **stop** and explain what was created.
+3. Do **not** move on to future features unless explicitly asked.
+4. Prefer **clear, readable code** over clever code.
+5. Keep files organized without overengineering folder structure.
+6. Include **simple manual verification steps** after each implementation.
+
+### Manual Verification (Required)
+
+Every phase completion MUST document manual steps, such as:
+
+- Start the app locally and confirm the page loads.
+- Click **Pull** multiple times and observe Common vs Rare outcomes.
+- Refresh the page and confirm state resets (no persistence).
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes conflicting guidance in specs, plans, and ad-hoc instructions
+for this repository.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### Amendment Procedure
+
+1. Propose changes via `/speckit.constitution` with rationale.
+2. Bump `CONSTITUTION_VERSION` per semantic versioning (see below).
+3. Update dependent templates (plan, spec, tasks) when principles change.
+4. Record changes in the Sync Impact Report HTML comment at the top of this file.
+
+### Versioning Policy
+
+- **MAJOR**: Backward-incompatible principle removals or redefinitions.
+- **MINOR**: New principles or materially expanded phase guidance.
+- **PATCH**: Clarifications, typo fixes, non-semantic wording.
+
+### Compliance Review
+
+- `/speckit.plan` MUST populate **Constitution Check** gates and reject unjustified
+  violations.
+- `/speckit.specify` MUST align user stories and requirements with the active phase scope.
+- `/speckit.tasks` MUST NOT schedule out-of-scope infrastructure for the current phase.
+- `/speckit.implement` MUST stop at phase boundaries and report manual verification steps.
+
+**Version**: 1.0.0 | **Ratified**: 2026-05-19 | **Last Amended**: 2026-05-19

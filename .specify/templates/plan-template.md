@@ -31,7 +31,18 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Reference gates (from `.specify/memory/constitution.md`; customize per feature/phase):
+
+| Gate | Requirement |
+|------|-------------|
+| Simplicity | Scope is the smallest playable slice for the active phase |
+| Infrastructure | No auth, database, Docker/K8s/AWS, CI/CD, or backend unless phase explicitly allows |
+| Abstractions | No layers/patterns beyond current phase needs; justify any added complexity |
+| Local run | App runs locally with minimal setup documented in quickstart |
+| Phase boundary | No future-phase features (currency, collection, persistence, accounts) unless requested |
+| Pull prototype (Phase 1) | **Pull** button; Common 90% / Rare 10%; no persistence after refresh |
+
+If any gate fails, document justification in **Complexity Tracking** or reduce scope.
 
 ## Project Structure
 

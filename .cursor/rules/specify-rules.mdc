@@ -1,0 +1,36 @@
+---
+description: Project Development Guidelines
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# gachaGame Development Guidelines
+
+Auto-generated from all feature plans. Last updated: 2026-05-19
+
+## Active Technologies
+
+- JavaScript (ES2022+), HTML5, CSS3 + Vite 6.x (dev server and bundler only; no UI framework) (001-phase1-gacha-pull)
+
+## Project Structure
+
+```text
+backend/
+frontend/
+tests/
+```
+
+## Commands
+
+npm test && npm run lint
+
+## Code Style
+
+JavaScript (ES2022+), HTML5, CSS3: Follow standard conventions
+
+## Recent Changes
+
+- 001-phase1-gacha-pull: Added JavaScript (ES2022+), HTML5, CSS3 + Vite 6.x (dev server and bundler only; no UI framework)
+
+<!-- MANUAL ADDITIONS START -->
+<!-- MANUAL ADDITIONS END -->
