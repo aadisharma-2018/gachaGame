@@ -26,7 +26,13 @@ This repository is a **phased learning project**: each phase adds a focused slic
 - Build and run the same app in a container (nginx serves production `dist/`)
 - Documented `docker build` / `docker run` workflow
 
-**Not included (yet):** backend, database, auth, persistence (`localStorage` / `sessionStorage`), inventory UI, Docker Compose, Kubernetes, CI/CD.
+**Phase 4 — GitHub Actions CI**
+
+- Automated checks on pull requests and pushes to **main**
+- Validates dependency install, frontend build, and Docker image build
+- Workflow: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+
+**Not included (yet):** backend, database, auth, persistence (`localStorage` / `sessionStorage`), inventory UI, Docker Compose, Kubernetes, deployment, Docker image publishing.
 
 ## Prerequisites
 
@@ -106,6 +112,39 @@ Stop the container with `Ctrl+C` in the terminal where `docker run` is running.
 - [ ] Gameplay matches `npm run dev` for Phase 1–2 rules
 - [ ] `npm run dev` still works independently
 
+## Continuous Integration (CI)
+
+GitHub Actions runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) to validate the project on every pull request and push to **main**.
+
+**When it runs**
+
+- **Pull requests** targeting **main**
+- **Pushes** to **main**
+
+**What it checks**
+
+1. Installs dependencies (`npm ci` when `package-lock.json` exists, otherwise `npm install`)
+2. Builds the frontend (`npm run build`)
+3. Builds the Docker image (`docker build -t gacha-game:ci .`)
+
+The workflow **fails** if the frontend build or Docker build fails. It does **not** deploy the app or publish Docker images.
+
+### CI manual verification
+
+**On GitHub**
+
+1. Push this branch and open a pull request targeting **main** (or merge to **main**).
+2. Open the **Actions** tab (or the PR **Checks** section).
+3. Confirm the **CI** workflow completes with a green check.
+
+**Optional local mirror** (same steps as CI)
+
+```bash
+npm ci
+npm run build
+docker build -t gacha-game:ci .
+```
+
 ## Manual verification
 
 ### Phase 2
@@ -171,4 +210,4 @@ Stop the container with `Ctrl+C` in the terminal where `docker run` is running.
 
 ## Specifications
 
-Design docs and task lists live under `specs/` (e.g. `001-phase1-gacha-pull`, `002-phase2-currency-counters`, `003-phase3-docker-dev`).
+Design docs and task lists live under `specs/` (e.g. `001-phase1-gacha-pull`, `002-phase2-currency-counters`, `003-phase3-docker-dev`, `004-phase4-github-ci`).
