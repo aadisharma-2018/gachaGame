@@ -36,3 +36,10 @@ export function recordPull(rarity) {
     commonCount += 1;
   }
 }
+
+/** Reset session state for tests (coins 10, counters 0). */
+export function resetGameState() {
+  coins = START_COINS;
+  commonCount = 0;
+  rareCount = 0;
+}
