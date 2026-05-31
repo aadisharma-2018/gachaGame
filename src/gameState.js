@@ -1,3 +1,5 @@
+import { resetInventory } from './inventory.js';
+
 const START_COINS = 10;
 
 let coins = START_COINS;
@@ -37,9 +39,10 @@ export function recordPull(rarity) {
   }
 }
 
-/** Reset session state for tests (coins 10, counters 0). */
+/** Reset session state for tests (coins 10, counters 0, inventory 0). */
 export function resetGameState() {
   coins = START_COINS;
   commonCount = 0;
   rareCount = 0;
+  resetInventory();
 }

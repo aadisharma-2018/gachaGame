@@ -15,10 +15,17 @@
         <p id="rare-count" class="game__stat">Rare: 0</p>
         <p id="coin-timer" class="game__stat game__stat--timer">Next coin: 1:00</p>
       </div>
-      <p id="result" class="game__result" aria-live="polite">
+      <div id="result" class="game__result" aria-live="polite">
         Pull to reveal a card
-      </p>
-      <button id="pull-btn" type="button" class="game__pull">Pull</button>
+      </div>
+      <div class="game__actions">
+        <button id="pull-btn" type="button" class="game__pull">Pull</button>
+        <button id="inventory-btn" type="button" class="game__inventory-btn">Inventory</button>
+      </div>
+      <section id="inventory-panel" class="game__inventory" hidden>
+        <h2 class="game__inventory-title">Inventory</h2>
+        <ul id="inventory-list" class="game__inventory-list"></ul>
+      </section>
     </main>
     <script type="module" src="/src/main.js"></script>
   </body>

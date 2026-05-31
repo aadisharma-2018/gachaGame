@@ -37,7 +37,14 @@ This repository is a **phased learning project**: each phase adds a focused slic
 - **Vitest** unit tests for pull odds and coin/counter logic
 - **`npm test`** runs locally and in CI before builds
 
-**Not included (yet):** backend, database, auth, persistence (`localStorage` / `sessionStorage`), inventory UI, Docker Compose, Kubernetes, deployment, Docker image publishing, E2E browser tests.
+**Phase 6 — Card pool and inventory**
+
+- **5** specific cards with emoji visuals (3 Common, 2 Rare)
+- Pull shows **emoji**, **name**, and **rarity**; **90% / 10%** odds unchanged
+- **Inventory** button toggles a same-page panel with per-card session quantities
+- All inventory data is **in-memory only** (resets on refresh)
+
+**Not included (yet):** backend, database, auth, persistence (`localStorage` / `sessionStorage`), separate inventory page, Docker Compose, Kubernetes, deployment, Docker image publishing, E2E browser tests.
 
 ## Prerequisites
 
@@ -184,6 +191,20 @@ docker build -t gacha-game:ci .
 
 ## Manual verification
 
+### Phase 6 — Card pool and inventory
+
+- [ ] **Pull** shows a specific card: emoji, name, and Common/Rare label
+- [ ] Common pulls can be Archer, Swordsman, or Protector
+- [ ] Rare pulls can be Mage or King
+- [ ] **Inventory** button toggles the panel on the same page
+- [ ] Panel lists all **5** cards with emoji, name, rarity, and quantity
+- [ ] Pulling a card increases that card’s quantity by **1**
+- [ ] Duplicate pulls of the same card stack quantity (e.g. Archer × 2)
+- [ ] **0** coins → **Not enough coins.**; inventory unchanged
+- [ ] Browser refresh resets inventory to **0** for all cards
+- [ ] Coins, timer, and Common/Rare counters still behave as in Phase 2
+- [ ] `npm test` still passes
+
 ### Phase 2
 
 #### 1. Coins and layout
@@ -247,4 +268,4 @@ docker build -t gacha-game:ci .
 
 ## Specifications
 
-Design docs and task lists live under `specs/` (e.g. `001-phase1-gacha-pull`, `002-phase2-currency-counters`, `003-phase3-docker-dev`, `004-phase4-github-ci`, `005-phase5-automated-tests`).
+Design docs and task lists live under `specs/` (e.g. `001-phase1-gacha-pull`, `002-phase2-currency-counters`, `003-phase3-docker-dev`, `004-phase4-github-ci`, `005-phase5-automated-tests`, `006-card-pool-inventory`).
