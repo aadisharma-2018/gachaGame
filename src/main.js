@@ -1,4 +1,6 @@
-import { rollRarity } from './pull.js';
+import { CARDS } from './cards.js';
+import { addCard, getQuantity } from './inventory.js';
+import { rollCard } from './pull.js';
 import {
   addCoin,
   getCoins,
@@ -9,7 +11,10 @@ import {
 } from './gameState.js';
 
 const pullBtn = document.getElementById('pull-btn');
+const inventoryBtn = document.getElementById('inventory-btn');
 const resultEl = document.getElementById('result');
+const inventoryPanelEl = document.getElementById('inventory-panel');
+const inventoryListEl = document.getElementById('inventory-list');
 const coinBalanceEl = document.getElementById('coin-balance');
 const commonCountEl = document.getElementById('common-count');
 const rareCountEl = document.getElementById('rare-count');
@@ -19,6 +24,7 @@ const NOT_ENOUGH_COINS = 'Not enough coins.';
 const PASSIVE_INCOME_MS = 60_000;
 
 let nextCoinAt = Date.now() + PASSIVE_INCOME_MS;
+let inventoryOpen = false;
 
 function renderStats() {
   coinBalanceEl.textContent = `Coins: ${getCoins()}`;
@@ -38,6 +44,48 @@ function clearResultRarityClasses() {
   resultEl.classList.remove('rarity-common', 'rarity-rare');
 }
 
+function renderResult(card) {
+  resultEl.innerHTML = `
+    <span class="game__result-emoji" aria-hidden="true">${card.emoji}</span>
+    <span class="game__result-name">${card.name}</span>
+    <span class="game__result-rarity">${card.label}</span>
+  `;
+  resultEl.classList.remove('rarity-common', 'rarity-rare');
+  resultEl.classList.add(card.rarity === 'rare' ? 'rarity-rare' : 'rarity-common');
+}
+
+function renderInventory() {
+  inventoryListEl.innerHTML = CARDS.map((card) => {
+    const quantity = getQuantity(card.id);
+    if (quantity === 0) {
+      return `
+      <li class="game__inventory-item">
+        <span class="game__inventory-emoji" aria-hidden="true">?</span>
+        <span class="game__inventory-name">???</span>
+        <span class="game__inventory-rarity">???</span>
+        <span class="game__inventory-qty">× 0</span>
+      </li>
+    `;
+    }
+    return `
+      <li class="game__inventory-item">
+        <span class="game__inventory-emoji" aria-hidden="true">${card.emoji}</span>
+        <span class="game__inventory-name">${card.name}</span>
+        <span class="game__inventory-rarity">${card.label}</span>
+        <span class="game__inventory-qty">× ${quantity}</span>
+      </li>
+    `;
+  }).join('');
+}
+
+function setInventoryOpen(open) {
+  inventoryOpen = open;
+  inventoryPanelEl.hidden = !open;
+  if (open) {
+    renderInventory();
+  }
+}
+
 pullBtn.addEventListener('click', () => {
   if (getCoins() < 1) {
     resultEl.textContent = NOT_ENOUGH_COINS;
@@ -46,18 +94,24 @@ pullBtn.addEventListener('click', () => {
   }
 
   spendCoin();
-  const { rarity, label } = rollRarity();
-  recordPull(rarity);
+  const card = rollCard();
+  recordPull(card.rarity);
+  addCard(card.id);
 
-  resultEl.textContent = label;
-  resultEl.classList.remove('rarity-common', 'rarity-rare');
-  resultEl.classList.add(rarity === 'rare' ? 'rarity-rare' : 'rarity-common');
-
+  renderResult(card);
   renderStats();
+  if (inventoryOpen) {
+    renderInventory();
+  }
+});
+
+inventoryBtn.addEventListener('click', () => {
+  setInventoryOpen(!inventoryOpen);
 });
 
 renderStats();
 renderCoinTimer();
+renderInventory();
 
 setInterval(() => {
   addCoin();

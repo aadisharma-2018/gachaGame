@@ -1,3 +1,5 @@
+import { pickCardFromPool } from './cards.js';
+
 /**
  * Map a random value in [0, 1) to pull rarity: Rare when value < 0.1, Common otherwise.
  * @param {number} randomValue
@@ -17,4 +19,13 @@ export function resolveRarity(randomValue) {
  */
 export function rollRarity() {
   return resolveRarity(Math.random());
+}
+
+/**
+ * Roll rarity then pick a specific card from that pool.
+ * @returns {import('./cards.js').Card}
+ */
+export function rollCard() {
+  const { rarity } = resolveRarity(Math.random());
+  return pickCardFromPool(rarity, Math.random());
 }
