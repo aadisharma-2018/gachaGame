@@ -16,6 +16,8 @@ Auto-generated from all feature plans. Last updated: 2026-05-31
 - N/A (in-memory session state only; unchanged) (005-phase5-automated-tests)
 - JavaScript (ES modules), Vite **6** + Existing vanilla JS modules; no new npm packages (006-card-pool-inventory)
 - In-memory only (module-level state); no `localStorage` / `sessionStorage` (006-card-pool-inventory)
+- JavaScript (ES modules), Vite **6** + Browser **`localStorage`**; existing game modules (007-localstorage-persistence)
+- **`localStorage`** key **`gachaGameState`** (JSON string) (007-localstorage-persistence)
 
 - JavaScript (ES2022+), HTML5, CSS3 + Vite 6.x (dev server and bundler only; no UI framework) (001-phase1-gacha-pull)
 
@@ -36,9 +38,9 @@ npm test && npm run lint
 JavaScript (ES2022+), HTML5, CSS3: Follow standard conventions
 
 ## Recent Changes
+- 007-localstorage-persistence: Added JavaScript (ES modules), Vite **6** + Browser **`localStorage`**; existing game modules
 - 006-card-pool-inventory: Added JavaScript (ES modules), Vite **6** + Existing vanilla JS modules; no new npm packages
 - 005-phase5-automated-tests: Added JavaScript (ES modules), Node **20** (matches CI and Dockerfile) + Vite **6**, Vitest **^3** (dev), existing vanilla JS game modules
-- 004-phase4-github-ci: Added JavaScript, Node **20** (matches Dockerfile build stage) + GitHub Actions (`actions/checkout`, `actions/setup-node`), npm, Docker on `ubuntu-latest`
 
 
 <!-- MANUAL ADDITIONS START -->

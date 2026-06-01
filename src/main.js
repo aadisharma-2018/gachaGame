@@ -1,5 +1,12 @@
 import { CARDS } from './cards.js';
 import { addCard, getQuantity } from './inventory.js';
+import {
+  applyGameState,
+  collectGameState,
+  getDefaultGameState,
+  loadGameState,
+  saveGameState,
+} from './persistence.js';
 import { rollCard } from './pull.js';
 import {
   addCoin,
@@ -25,6 +32,7 @@ const PASSIVE_INCOME_MS = 60_000;
 
 let nextCoinAt = Date.now() + PASSIVE_INCOME_MS;
 let inventoryOpen = false;
+let lastPullCardId = null;
 
 function renderStats() {
   coinBalanceEl.textContent = `Coins: ${getCoins()}`;
@@ -42,6 +50,11 @@ function renderCoinTimer() {
 
 function clearResultRarityClasses() {
   resultEl.classList.remove('rarity-common', 'rarity-rare');
+}
+
+function renderDefaultResult() {
+  resultEl.textContent = 'Pull to reveal a card';
+  clearResultRarityClasses();
 }
 
 function renderResult(card) {
@@ -86,6 +99,26 @@ function setInventoryOpen(open) {
   }
 }
 
+function persistState() {
+  saveGameState(collectGameState(lastPullCardId));
+}
+
+function initializeFromStorage() {
+  const saved = loadGameState();
+  const snapshot = saved ?? getDefaultGameState();
+  const lastCard = applyGameState(snapshot);
+  lastPullCardId = snapshot.lastPull;
+
+  renderStats();
+  if (lastCard) {
+    renderResult(lastCard);
+  } else {
+    renderDefaultResult();
+  }
+  renderCoinTimer();
+  renderInventory();
+}
+
 pullBtn.addEventListener('click', () => {
   if (getCoins() < 1) {
     resultEl.textContent = NOT_ENOUGH_COINS;
@@ -97,26 +130,27 @@ pullBtn.addEventListener('click', () => {
   const card = rollCard();
   recordPull(card.rarity);
   addCard(card.id);
+  lastPullCardId = card.id;
 
   renderResult(card);
   renderStats();
   if (inventoryOpen) {
     renderInventory();
   }
+  persistState();
 });
 
 inventoryBtn.addEventListener('click', () => {
   setInventoryOpen(!inventoryOpen);
 });
 
-renderStats();
-renderCoinTimer();
-renderInventory();
+initializeFromStorage();
 
 setInterval(() => {
   addCoin();
   renderStats();
   nextCoinAt = Date.now() + PASSIVE_INCOME_MS;
+  persistState();
 }, PASSIVE_INCOME_MS);
 
 setInterval(renderCoinTimer, 1000);

@@ -13,6 +13,13 @@ export function addCard(cardId) {
   }
 }
 
+/** @param {Record<string, number>} counts */
+export function loadInventory(counts) {
+  for (const card of CARDS) {
+    quantities[card.id] = counts[card.id] ?? 0;
+  }
+}
+
 export function resetInventory() {
   for (const card of CARDS) {
     quantities[card.id] = 0;

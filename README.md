@@ -42,9 +42,17 @@ This repository is a **phased learning project**: each phase adds a focused slic
 - **5** specific cards with emoji visuals (3 Common, 2 Rare)
 - Pull shows **emoji**, **name**, and **rarity**; **90% / 10%** odds unchanged
 - **Inventory** button toggles a same-page panel with per-card session quantities
-- All inventory data is **in-memory only** (resets on refresh)
 
-**Not included (yet):** backend, database, auth, persistence (`localStorage` / `sessionStorage`), separate inventory page, Docker Compose, Kubernetes, deployment, Docker image publishing, E2E browser tests.
+**Phase 7 — localStorage persistence**
+
+- Progress saved in **`localStorage`** under key **`gachaGameState`**
+- Persists **coins**, **Common/Rare counters**, **5 inventory counts**, and **last pulled card**
+- Auto-save after successful pulls and passive **+1** coin timer ticks
+- **Reset Progress** clears storage and restores default state
+- Invalid or missing saved data falls back to defaults (10 coins, zero counts)
+- Passive timer countdown and inventory panel open/closed state are **not** persisted
+
+**Not included (yet):** backend, database, auth, sessionStorage, IndexedDB, separate inventory page, Docker Compose, Kubernetes, deployment, Docker image publishing, E2E browser tests.
 
 ## Prerequisites
 
@@ -104,8 +112,9 @@ npm run test:watch
 
 - **`pull.js`**: `resolveRarity` at the **0.1** boundary (Rare below, Common at/above)
 - **`gameState.js`**: spend, add, record pull, balances, and counters
+- **`persistence.js`**: default snapshot, validation, load/save/clear with mock `localStorage`
 
-**Not tested in Phase 5**: UI clicks, passive income timer (`main.js`).
+**Not tested**: UI clicks, passive income timer (`main.js`).
 
 ## Docker
 
@@ -143,7 +152,7 @@ Stop the container with `Ctrl+C` in the terminal where `docker run` is running.
 - [ ] `docker run --rm -p 8080:80 gacha-game:local` stays running
 - [ ] http://localhost:8080 shows the game (coins, Pull, counters, timer)
 - [ ] **Pull** costs 1 coin; at 0 coins shows **Not enough coins.**
-- [ ] Browser refresh resets session (coins 10, counts 0)
+- [ ] Browser refresh **keeps** saved progress (Phase 7); **Reset Progress** restores defaults
 - [ ] Gameplay matches `npm run dev` for Phase 1–2 rules
 - [ ] `npm run dev` still works independently
 
@@ -191,6 +200,20 @@ docker build -t gacha-game:ci .
 
 ## Manual verification
 
+### Phase 7 — localStorage persistence
+
+- [ ] First visit: **10** coins, zero counters/inventory, placeholder **Pull to reveal a card**
+- [ ] Pull a card → refresh → coins, counters, inventory, and last pull result restored
+- [ ] Wait for passive **+1** coin → refresh → updated coin balance persists
+- [ ] **Reset Progress** → defaults in UI; refresh stays at defaults
+- [ ] DevTools → Application → Local Storage → key **`gachaGameState`** holds JSON snapshot
+- [ ] Corrupt the saved JSON (invalid version or missing fields) → refresh loads defaults
+- [ ] Clearing site data removes progress (same as Reset)
+- [ ] `npm test` still passes
+
+**Storage key**: `gachaGameState`  
+**Origin note**: `localStorage` is per origin (scheme + host + port). `http://localhost:5173` (dev) and `http://localhost:8080` (Docker) are separate; progress does not carry between them.
+
 ### Phase 6 — Card pool and inventory
 
 - [ ] **Pull** shows a specific card: emoji, name, and Common/Rare label
@@ -201,7 +224,7 @@ docker build -t gacha-game:ci .
 - [ ] Pulling a card increases that card’s quantity by **1**
 - [ ] Duplicate pulls of the same card stack quantity (e.g. Archer × 2)
 - [ ] **0** coins → **Not enough coins.**; inventory unchanged
-- [ ] Browser refresh resets inventory to **0** for all cards
+- [ ] Browser refresh **restores** inventory and session stats (Phase 7)
 - [ ] Coins, timer, and Common/Rare counters still behave as in Phase 2
 - [ ] `npm test` still passes
 
@@ -234,14 +257,16 @@ docker build -t gacha-game:ci .
 - [ ] With page open, wait until the countdown reaches **0:00** (or use a clock for ~60s)
 - [ ] Coin balance increases by **1** without refreshing; countdown resets to **1:00**
 
-#### 6. Refresh resets state
+#### 6. Refresh and persistence (Phase 7)
 
 - [ ] After playing, refresh the page (F5 / Cmd+R)
-- [ ] Coins return to **10**, counts to **0**, result shows placeholder text
+- [ ] Coins, counters, inventory, and last pull are **restored** from `localStorage`
+- [ ] **Reset Progress** clears storage; refresh shows defaults again
 
-#### 7. No persistence APIs
+#### 7. Persistence implementation
 
-- [ ] Confirm `src/` has no `localStorage`, `sessionStorage`, or `indexedDB` usage
+- [ ] Confirm `src/persistence.js` uses **`localStorage`** only (no sessionStorage/IndexedDB)
+- [ ] Key **`gachaGameState`** stores versioned JSON snapshot
 
 #### 8. Phase 1 odds (unchanged)
 
@@ -268,4 +293,4 @@ docker build -t gacha-game:ci .
 
 ## Specifications
 
-Design docs and task lists live under `specs/` (e.g. `001-phase1-gacha-pull`, `002-phase2-currency-counters`, `003-phase3-docker-dev`, `004-phase4-github-ci`, `005-phase5-automated-tests`, `006-card-pool-inventory`).
+Design docs and task lists live under `specs/` (e.g. `001-phase1-gacha-pull`, `002-phase2-currency-counters`, `003-phase3-docker-dev`, `004-phase4-github-ci`, `005-phase5-automated-tests`, `006-card-pool-inventory`, `007-localstorage-persistence`).
